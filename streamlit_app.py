@@ -51,7 +51,7 @@ if st.session_state["allData"]:
                     "pearson", "spearman", "kendall", "point", "cramers", "variance_threshold"
                 ])
                 if col2.checkbox("Execute Feature Selection"):
-                    getattr(feature_selection, method)()
+                    getattr(feature_selection, method)(col2)
 
             elif selected_option == "Feature Extraction":
                 statistical_functions = StatisticalFunctions(df)
@@ -59,7 +59,7 @@ if st.session_state["allData"]:
                     "generic_univariate_select", "select_fdr", "select_fpr", "select_fwe", "select_k_best", "select_percentile"
                 ])
                 if col2.checkbox("Execute Feature Extraction"):
-                    getattr(statistical_functions, method)()
+                    getattr(statistical_functions, method)(col2)
 
             elif selected_option == "Feature Transformation":
                 final_dataset = FinalDataSet(df)
@@ -67,7 +67,7 @@ if st.session_state["allData"]:
                     "drop_features", "drop_constant_features", "drop_duplicate_features", "drop_correlated_features", "smart_correlated_selection"
                 ])
                 if col2.checkbox("Execute Feature Transformation"):
-                    transformed_df = getattr(final_dataset, method)()
+                    transformed_df = getattr(final_dataset, method)(col2)
                     st.session_state["allData"][f"transformed_{method}"] = transformed_df
 
             elif selected_option == "Feature Creation":
@@ -77,7 +77,7 @@ if st.session_state["allData"]:
                     "select_by_information_value", "select_by_shuffling", "select_by_target_mean_performance", "select_by_mrmr"
                 ])
                 if col2.checkbox("Execute Feature Creation"):
-                    transformed_df = getattr(final_dataset, method)()
+                    transformed_df = getattr(final_dataset, method)(col2)
                     st.session_state["allData"][f"transformed_{method}"] = transformed_df
 
         with tab2:
