@@ -5,3 +5,4 @@ seaborn
 chardet
 scikit-learn
 pandas
+scipy
