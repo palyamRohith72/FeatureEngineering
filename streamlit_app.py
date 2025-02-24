@@ -43,14 +43,14 @@ if st.session_state["allData"]:
         tab1, tab2, tab3 = st.tabs(["Perform Operations", "View Data", "See Documentation"])
 
         with tab1:
-            col1, col2 = st.columns([1, 2])
+            col1, col2 = st.columns([1, 2],border=True)
             
             if selected_option == "Feature Selection":
                 feature_selection = FeatureSelection(df)
                 method = col1.radio("Select Feature Selection Method", [
                     "pearson", "spearman", "kendall", "point", "cramers", "variance_threshold"
                 ])
-                if col2.button("Execute Feature Selection"):
+                if col2.checkbox("Execute Feature Selection"):
                     getattr(feature_selection, method)()
 
             elif selected_option == "Feature Extraction":
@@ -58,7 +58,7 @@ if st.session_state["allData"]:
                 method = col1.radio("Select Feature Extraction Method", [
                     "generic_univariate_select", "select_fdr", "select_fpr", "select_fwe", "select_k_best", "select_percentile"
                 ])
-                if col2.button("Execute Feature Extraction"):
+                if col2.checkbox("Execute Feature Extraction"):
                     getattr(statistical_functions, method)()
 
             elif selected_option == "Feature Transformation":
@@ -66,7 +66,7 @@ if st.session_state["allData"]:
                 method = col1.radio("Select Feature Transformation Method", [
                     "drop_features", "drop_constant_features", "drop_duplicate_features", "drop_correlated_features", "smart_correlated_selection"
                 ])
-                if col2.button("Execute Feature Transformation"):
+                if col2.checkbox("Execute Feature Transformation"):
                     transformed_df = getattr(final_dataset, method)()
                     st.session_state["allData"][f"transformed_{method}"] = transformed_df
 
@@ -76,7 +76,7 @@ if st.session_state["allData"]:
                     "select_by_single_feature_performance", "recursive_feature_elimination", "recursive_feature_addition",
                     "select_by_information_value", "select_by_shuffling", "select_by_target_mean_performance", "select_by_mrmr"
                 ])
-                if col2.button("Execute Feature Creation"):
+                if col2.checkbox("Execute Feature Creation"):
                     transformed_df = getattr(final_dataset, method)()
                     st.session_state["allData"][f"transformed_{method}"] = transformed_df
 
