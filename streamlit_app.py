@@ -28,7 +28,7 @@ if uploaded_file:
 with st.sidebar:
     selected_option = option_menu(
         "Feature Engineering Options",
-        ["Feature Selection", "Feature Extraction", "Feature Transformation", "Feature Creation"],
+        ["Relation Ship Between Features", "Feature Selection", "Feature Transformation", "Feature Creation"],
         icons=["filter-square", "arrow-down-up", "sliders", "plus-square"],
         menu_icon="tools",
         default_index=0
@@ -43,7 +43,7 @@ if st.session_state["allData"]:
         tab1, tab2, tab3 = st.tabs(["Perform Operations", "View Data", "See Documentation"])
 
         with tab1:
-            if selected_option == "Feature Selection":
+            if selected_option == "Relation Ship Between Features":
                 feature_selection = FeatureSelection(df)
                 method = st.selectbox("Select Feature Selection Method", [
                     "pearson", "spearman", "kendall", "point", "cramers", "variance_threshold"
@@ -59,27 +59,36 @@ if st.session_state["allData"]:
                         feature_selection.point()
                     elif method == "cramers":
                         feature_selection.cramers()
-                    elif method == "variance_threshold":
-                        feature_selection.variance_threshold()
 
-            elif selected_option == "Feature Extraction":
+            elif selected_option == "Feature Selection":
+                correlation=FeatureSelection(df)
                 statistical_functions = StatisticalFunctions(df)
-                method = col1.radio("Select Feature Extraction Method", [
-                    "generic_univariate_select", "select_fdr", "select_fpr", "select_fwe", "select_k_best", "select_percentile"
+                method = st.seslectbox("Select Feature Extraction Method", [
+                    "varience threshold","generic_univariate_select", "select_fdr", "select_fpr", "select_fwe", "select_k_best", "select_percentile"
                 ])
-                if col2.button("Execute Feature Extraction"):
+                if st.checkbutton("Execute Feature Extraction"):
+                    if method=="varience threshold":
+                        method == "variance_threshold":
+                        dataFrame=feature_selection.variance_threshold()
+                        st.session_state['allData']['Stage 1 - Feature Selection - Varience Threshold']=dataFrame
                     if method == "generic_univariate_select":
-                        statistical_functions.generic_univariate_select()
+                        dataFrame=statistical_functions.generic_univariate_select()
+                        st.session_state['allData']['Stage 1 - Feature Selection - Generic Univariate Select']=dataFrame
                     elif method == "select_fdr":
-                        statistical_functions.select_fdr()
+                        dataFrame=statistical_functions.select_fdr()
+                        st.session_state['allData']['Stage 1 - Feature Selection - False Density Rate']=dataFrame
                     elif method == "select_fpr":
-                        statistical_functions.select_fpr()
+                        dataFrame=statistical_functions.select_fpr()
+                        st.session_state['allData']['Stage 1 - Feature Selection - False Positive Rate']=dataFrame
                     elif method == "select_fwe":
-                        statistical_functions.select_fwe()
+                        dataFrame=statistical_functions.select_fwe()
+                        st.session_state['allData']['Stage 1 - Feature Selection - Select FWE']=dataFrame
                     elif method == "select_k_best":
-                        statistical_functions.select_k_best()
+                        dataFrame=statistical_functions.select_k_best()
+                        st.session_state['allData']['Stage 1 - Feature Selection - Select K Best']=dataFrame
                     elif method == "select_percentile":
-                        statistical_functions.select_percentile()
+                        dataFrame=statistical_functions.select_percentile()
+                        st.session_state['allData']['Stage 1 - Feature Selection - Select Percentile']=dataFrame
 
             elif selected_option == "Feature Transformation":
                 final_dataset = FinalDataSet(df)
