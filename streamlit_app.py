@@ -68,7 +68,6 @@ if st.session_state["allData"]:
                 ])
                 if st.checkbutton("Execute Feature Extraction"):
                     if method=="varience threshold":
-                        method == "variance_threshold":
                         dataFrame=feature_selection.variance_threshold()
                         st.session_state['allData']['Stage 1 - Feature Selection - Varience Threshold']=dataFrame
                     if method == "generic_univariate_select":
