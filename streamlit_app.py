@@ -64,6 +64,7 @@ if st.session_state["allData"]:
             elif selected_option == "Feature Selection":
                 correlation=FeatureSelection(df)
                 statistical_functions = StatisticalFunctions(df)
+                final_dataset = FinalDataSet(df)
                 method = st.selectbox("Select Feature Extraction Method", [
                     "varience threshold","generic_univariate_select", "select_fdr", "select_fpr",
                     "select_fwe", "select_k_best", "select_percentile","drop_features", "drop_constant_features","drop_duplicate_features", "drop_correlated_features", "smart_correlated_selection"
@@ -103,7 +104,6 @@ if st.session_state["allData"]:
                     st.session_state["allData"][f"transformed_{method}"] = transformed_df
 
             elif selected_option == "Feature Creation":
-                final_dataset = FinalDataSet(df)
                 method = col1.radio("Select Feature Creation Method", [
                     "select_by_single_feature_performance", "recursive_feature_elimination", "recursive_feature_addition",
                     "select_by_information_value", "select_by_shuffling", "select_by_target_mean_performance", "select_by_mrmr"
