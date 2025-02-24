@@ -1,10 +1,6 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
 import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-from sklearn.preprocessing import StandardScaler, MinMaxScaler
-from feature_engine.imputation import MeanMedianImputer
 import chardet
 from correlation import Correlation
 
@@ -60,22 +56,13 @@ if st.session_state["allData"]:
             object.display()
 
         elif selected_option == "Feature Selection":
-            st.subheader("Feature Selection")
-            missing_values = df.isnull().sum()
-            st.write("Missing Values:", missing_values)
-            st.write("Feature Variance:", df.var())
+            pass
             
         elif selected_option == "Feature Extraction":
-            st.subheader("Feature Extraction")
-            st.write("Extracting Principal Components (PCA) is an example of feature extraction.")
+            pass
             
         elif selected_option == "Feature Transformation":
-            st.subheader("Feature Transformation")
-            scaler = StandardScaler()
-            transformed_data = scaler.fit_transform(df.select_dtypes(include=[np.number]))
-            st.write(pd.DataFrame(transformed_data, columns=df.select_dtypes(include=[np.number]).columns))
+            pass
             
         elif selected_option == "Feature Creation":
-            st.subheader("Feature Creation")
-            df['New_Feature'] = df.select_dtypes(include=[np.number]).mean(axis=1)
-            st.write(df.head())
+            pass
