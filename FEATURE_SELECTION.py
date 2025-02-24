@@ -150,7 +150,7 @@ class StatisticalFunctions:
             X_new = transformer.fit_transform(x, y)
 
             st.header("Transformed Data Frame")
-            transformed_df = pd.DataFrame(X_new, columns=X_new.columns)
+            transformed_df = X_new
             st.dataframe(transformed_df)
 
             # Calling common_attributes
