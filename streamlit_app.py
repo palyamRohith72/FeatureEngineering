@@ -66,7 +66,7 @@ if st.session_state["allData"]:
                 method = st.selectbox("Select Feature Extraction Method", [
                     "varience threshold","generic_univariate_select", "select_fdr", "select_fpr", "select_fwe", "select_k_best", "select_percentile"
                 ])
-                if st.checkbutton("Execute Feature Extraction"):
+                if st.checkbox("Execute Feature Extraction"):
                     if method=="varience threshold":
                         dataFrame=feature_selection.variance_threshold()
                         st.session_state['allData']['Stage 1 - Feature Selection - Varience Threshold']=dataFrame
