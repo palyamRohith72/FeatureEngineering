@@ -43,14 +43,12 @@ if st.session_state["allData"]:
         tab1, tab2, tab3 = st.tabs(["Perform Operations", "View Data", "See Documentation"])
 
         with tab1:
-            col1, col2 = st.columns([1, 2])
-            
             if selected_option == "Feature Selection":
                 feature_selection = FeatureSelection(df)
-                method = col1.radio("Select Feature Selection Method", [
+                method = st.selectbox("Select Feature Selection Method", [
                     "pearson", "spearman", "kendall", "point", "cramers", "variance_threshold"
                 ])
-                if col2.button("Execute Feature Selection"):
+                if st.checkbox("Execute Feature Selection"):
                     if method == "pearson":
                         feature_selection.pearson()
                     elif method == "spearman":
