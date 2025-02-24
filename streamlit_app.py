@@ -63,7 +63,7 @@ if st.session_state["allData"]:
             elif selected_option == "Feature Selection":
                 correlation=FeatureSelection(df)
                 statistical_functions = StatisticalFunctions(df)
-                method = st.seslectbox("Select Feature Extraction Method", [
+                method = st.selectbox("Select Feature Extraction Method", [
                     "varience threshold","generic_univariate_select", "select_fdr", "select_fpr", "select_fwe", "select_k_best", "select_percentile"
                 ])
                 if st.checkbutton("Execute Feature Extraction"):
