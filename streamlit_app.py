@@ -45,6 +45,7 @@ if st.session_state["allData"]:
         with tab1:
             if selected_option == "Relation Ship Between Features":
                 feature_selection = FeatureSelection(df)
+                final_dataset = FinalDataSet(df)
                 method = st.selectbox("Select Feature Selection Method", [
                     "pearson", "spearman", "kendall", "point", "cramers", "variance_threshold"
                 ])
@@ -64,7 +65,8 @@ if st.session_state["allData"]:
                 correlation=FeatureSelection(df)
                 statistical_functions = StatisticalFunctions(df)
                 method = st.selectbox("Select Feature Extraction Method", [
-                    "varience threshold","generic_univariate_select", "select_fdr", "select_fpr", "select_fwe", "select_k_best", "select_percentile"
+                    "varience threshold","generic_univariate_select", "select_fdr", "select_fpr",
+                    "select_fwe", "select_k_best", "select_percentile","drop_features", "drop_constant_features","drop_duplicate_features", "drop_correlated_features", "smart_correlated_selection"
                 ])
                 if st.checkbox("Execute Feature Extraction"):
                     if method=="varience threshold":
@@ -88,14 +90,7 @@ if st.session_state["allData"]:
                     elif method == "select_percentile":
                         dataFrame=statistical_functions.select_percentile()
                         st.session_state['allData']['Stage 1 - Feature Selection - Select Percentile']=dataFrame
-
-            elif selected_option == "Feature Transformation":
-                final_dataset = FinalDataSet(df)
-                method = col1.radio("Select Feature Transformation Method", [
-                    "drop_features", "drop_constant_features", "drop_duplicate_features", "drop_correlated_features", "smart_correlated_selection"
-                ])
-                if col2.button("Execute Feature Transformation"):
-                    if method == "drop_features":
+                    elif method == "drop_features":
                         transformed_df = final_dataset.drop_features()
                     elif method == "drop_constant_features":
                         transformed_df = final_dataset.drop_constant_features()
