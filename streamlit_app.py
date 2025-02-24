@@ -71,26 +71,19 @@ if st.session_state["allData"]:
                 ])
                 if st.checkbox("Execute Feature Extraction"):
                     if method=="varience threshold":
-                        dataFrame=correlation.variance_threshold()
-                        st.session_state['allData']['Stage 1 - Feature Selection - Varience Threshold']=dataFrame
+                        correlation.variance_threshold()
                     if method == "generic_univariate_select":
-                        dataFrame=statistical_functions.generic_univariate_select()
-                        st.session_state['allData']['Stage 1 - Feature Selection - Generic Univariate Select']=dataFrame
+                        statistical_functions.generic_univariate_select()
                     elif method == "select_fdr":
-                        dataFrame=statistical_functions.select_fdr()
-                        st.session_state['allData']['Stage 1 - Feature Selection - False Density Rate']=dataFrame
+                        statistical_functions.select_fdr()
                     elif method == "select_fpr":
-                        dataFrame=statistical_functions.select_fpr()
-                        st.session_state['allData']['Stage 1 - Feature Selection - False Positive Rate']=dataFrame
+                        statistical_functions.select_fpr()
                     elif method == "select_fwe":
-                        dataFrame=statistical_functions.select_fwe()
-                        st.session_state['allData']['Stage 1 - Feature Selection - Select FWE']=dataFrame
+                        statistical_functions.select_fwe()
                     elif method == "select_k_best":
-                        dataFrame=statistical_functions.select_k_best()
-                        st.session_state['allData']['Stage 1 - Feature Selection - Select K Best']=dataFrame
+                        statistical_functions.select_k_best()
                     elif method == "select_percentile":
-                        dataFrame=statistical_functions.select_percentile()
-                        st.session_state['allData']['Stage 1 - Feature Selection - Select Percentile']=dataFrame
+                        statistical_functions.select_percentile()
                     elif method == "drop_features":
                         transformed_df = final_dataset.drop_features()
                     elif method == "drop_constant_features":
@@ -101,7 +94,6 @@ if st.session_state["allData"]:
                         transformed_df = final_dataset.drop_correlated_features()
                     elif method == "smart_correlated_selection":
                         transformed_df = final_dataset.smart_correlated_selection()
-                    st.session_state["allData"][f"transformed_{method}"] = transformed_df
 
             elif selected_option == "Feature Creation":
                 method = col1.radio("Select Feature Creation Method", [
