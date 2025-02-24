@@ -190,11 +190,11 @@ class StatisticalFunctions:
 
     def select_k_best(self,col2):
         st.header("Select K Best")
-        self._apply_selection_method_with_param("k", SelectKBest, default_param=10,col2)
+        self._apply_selection_method_with_param("k", SelectKBest,col2,default_param=10)
 
     def select_percentile(self,col2):
         st.header("Select Percentile")
-        self._apply_selection_method_with_param("percentile", SelectPercentile, default_param=10,col2)
+        self._apply_selection_method_with_param("percentile", SelectPercentile,col2, default_param=10)
 
     def _apply_selection_method(self, header, selector_class,col2):
         with col2:
@@ -224,7 +224,7 @@ class StatisticalFunctions:
                 # Calling common_attributes
                 self.common_attributes(transformer)
 
-    def _apply_selection_method_with_param(self, param_name, selector_class, default_param,col2):
+    def _apply_selection_method_with_param(self, param_name, selector_class,col2, default_param):
         with col2:
             param = st.number_input(f"Select the {param_name} value", min_value=1, value=default_param, step=1)
     
