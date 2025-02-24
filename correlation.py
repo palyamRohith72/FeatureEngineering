@@ -12,7 +12,7 @@ class Correlation:
         tab1, tab2, tab3 = st.tabs(["Perform Operations", "View Data", "See Documentation"])
         
         with tab1:
-            col1, col2 = st.columns([1, 2])
+            col1, col2 = st.columns([1, 2],border=True)
             
             with col1:
                 method = st.radio("Select Correlation Method", ["pearson", "kendall", "spearman"], index=0)
@@ -20,7 +20,8 @@ class Correlation:
             
             with col2:
                 st.subheader("Correlation Matrix", divider='blue')
-                if st.button("Compute Correlation"):
+                numeric_only = st.checkbox("Include only numeric data", value=False)
+                if st.button("Compute Correlation",use_container_width=True,type='primary'):
                     corr_matrix = self.dataset.corr(method=method, numeric_only=numeric_only)
                     st.dataframe(corr_matrix)
                     
