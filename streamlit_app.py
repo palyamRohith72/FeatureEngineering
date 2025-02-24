@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from feature_engine.imputation import MeanMedianImputer
 import chardet
+from correlation import Correlation
 
 # Initialize session state for storing dataframes
 if "allData" not in st.session_state:
@@ -55,13 +56,8 @@ if st.session_state["allData"]:
 
     if df is not None:
         if selected_option == "Correlations":
-            st.subheader("Feature Correlations")
-            corr_matrix = df.corr()
-            st.write(corr_matrix)
-            fig, ax = plt.subplots()
-            cax = ax.matshow(corr_matrix, cmap='coolwarm')
-            fig.colorbar(cax)
-            st.pyplot(fig)
+            object=Correlation(df)
+            object.display()
 
         elif selected_option == "Feature Selection":
             st.subheader("Feature Selection")
