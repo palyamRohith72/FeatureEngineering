@@ -2,7 +2,7 @@ import streamlit as st
 from streamlit_option_menu import option_menu
 import pandas as pd
 import chardet
-from FEATURE_SELECTION import FeatureSelection, StatisticalFunctions, FinalDataSet
+from FEATURE_SELECTION import *
 
 # Initialize session state for storing dataframes
 if "allData" not in st.session_state:
