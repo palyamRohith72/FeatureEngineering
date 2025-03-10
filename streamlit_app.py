@@ -88,7 +88,7 @@ class Features:
         if select_columns:
             dataset = self.dataset.copy(deep=True)[select_columns]
             if st.button("Execute Feature Selection", use_container_width=True):   
-                object=DropFeatures(columns)
+                object=DropFeatures(select_columns)
                 dataframe=object.fit_transform(dataset)
                 st.session_state[keyy]=dataframe
                 st.dataframe(dataframe)
