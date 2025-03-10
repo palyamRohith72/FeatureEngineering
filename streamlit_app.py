@@ -36,13 +36,13 @@ class Features:
         
         with tab1:
             col1, col2 = st.columns([1, 2])
-            radio_options = col1.radio("Options Were", ["pearson", "spearman", "kendall", "point", "cramers", "variance_threshold"])
+            radio_options = col1.radio("Options Were", ["pearson", "spearman", "kendall", "point", "cramers"])
             
             with col2:
                 select_columns = st.multiselect("Select columns", self.dataset.columns.tolist())
                 if select_columns:
                     dataset = self.dataset.copy(deep=True)[select_columns]
-                    if st.checkbox("Execute Feature Selection"):
+                    if st.button("Execute Feature Selection", use_container_width=True):
                         feature_selection = FeatureSelection(dataset)
                         try:
                             getattr(feature_selection, radio_options, lambda: st.warning("Invalid Method"))()
