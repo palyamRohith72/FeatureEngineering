@@ -123,7 +123,7 @@ class Features:
     
     def drop_correlated_features(self,option):
         select_columns = st.multiselect("Select columns", self.dataset.columns.tolist())
-        threshold=st.number_input("The correlation threshold above which a feature will be deemed correlated with another one and removed from the dataset.",0.8)
+        threshold=st.number_input("The correlation threshold above which a feature will be deemed correlated with another one and removed from the dataset.",0.1)
         method=st.selectbox("Correlation method -Can take ‘pearson’, ‘spearman’, ‘kendall’",["pearson","spearman","kendall"])
         dataset = self.dataset.copy(deep=True)
         if st.button("Execute Feature Selection", use_container_width=True):   
