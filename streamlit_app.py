@@ -35,7 +35,7 @@ class Features:
         tab1, tab2 = st.tabs(["Perform Operations", "View Data"])
         
         with tab1:
-            col1, col2 = st.columns([1, 2])
+            col1, col2 = st.columns([1, 2],border=True)
             radio_options = col1.radio("Options Were", ["pearson", "spearman", "kendall", "point", "cramers"])
             
             with col2:
@@ -73,7 +73,7 @@ class Features:
         tab1, tab2 = st.tabs(["Perform Operations", "View Data"])
         
         with tab1:
-            col1, col2 = st.columns([1, 2])
+            col1, col2 = st.columns([1, 2],border=True)
             radio_options = col1.radio("Options Were", list(feature_methods.keys()))
             
             if radio_options:
