@@ -57,7 +57,7 @@ class Features:
         column_name=st.text_input("Enter the column name")
         query=st.text_area("Select the text input, assuming that your dataset is stored in a variable called data")
         if st.button("Apply Operation",use_container_width=True):
-            data=data.assign(column_name,eval(query))
+            data=data.assign(column_name=eval(query))
             st.dataframe(data)
             st.session_state[f'create columns - {column_name} -{query}']=data
     def select_features(self):
