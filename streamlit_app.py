@@ -109,11 +109,31 @@ class Features:
                 st.dataframe(dataframe)
             except Exception as e:
                 st.error(e)
-    def drop_duplicated_features(self):
-        st.write("Dropping duplicated features.")
+    def drop_duplicated_features(self,option):
+        select_columns = st.multiselect("Select columns", self.dataset.columns.tolist())
+        dataset = self.dataset.copy(deep=True)
+        if st.button("Execute Feature Selection", use_container_width=True):   
+            try:
+                object=DropDuplicateFeatures(select_columns)
+                dataframe=object.fit_transform(dataset)
+                st.session_state[option]=dataframe
+                st.dataframe(dataframe)
+            except Exception as e:
+                st.error(e)
     
-    def drop_correlated_features(self):
-        st.write("Dropping correlated features.")
+    def drop_correlated_features(self,option):
+        select_columns = st.multiselect("Select columns", self.dataset.columns.tolist())
+        threshold=st.number_input("The correlation threshold above which a feature will be deemed correlated with another one and removed from the dataset.",0.8)
+        method=st.selectbox("Correlation method -Can take ‘pearson’, ‘spearman’, ‘kendall’",["pearson","spearman","kendall"])
+        dataset = self.dataset.copy(deep=True)
+        if st.button("Execute Feature Selection", use_container_width=True):   
+            try:
+                object=DropCorrelatedFeatures(select_columns,method,threshold)
+                dataframe=object.fit_transform(dataset)
+                st.session_state[option]=dataframe
+                st.dataframe(dataframe)
+            except Exception as e:
+                st.error(e)
     
     def smart_correlated_selection(self):
         st.write("Performing smart correlated selection.")
