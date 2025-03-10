@@ -93,7 +93,7 @@ class Features:
                 st.session_state[keyy]=dataframe
                 st.dataframe(dataframe)
     def drop_constant_features(self,option):
-        select_columns = st.multiselect("Select columns", self.dataset.columns.tolist())
+        select_columns = st.multiselect("Select columns", [None]+self.dataset.columns.tolist())
         tol=int(st.number_input("""Threshold to detect constant/quasi-constant features. Variables showing the same value in a
         percentage of observations greater than tol will be considered 
         constant / quasi-constant and dropped. If tol=1, the transformer 
@@ -103,11 +103,13 @@ class Features:
         if select_columns:
             dataset = self.dataset.copy(deep=True)
             if st.button("Execute Feature Selection", use_container_width=True):   
-                object=DropConstantFeatures(select_columns,tol)
-                dataframe=object.fit_transform(dataset)
-                st.session_state[option]=dataframe
-                st.dataframe(dataframe)
-    
+                try:
+                    object=DropConstantFeatures(select_columns,tol)
+                    dataframe=object.fit_transform(dataset)
+                    st.session_state[option]=dataframe
+                    st.dataframe(dataframe)
+                except Exception as e:
+                    st.error(e)
     def drop_duplicated_features(self):
         st.write("Dropping duplicated features.")
     
