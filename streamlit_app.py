@@ -86,7 +86,7 @@ class Features:
     def drop_features(self,keyy):
         select_columns = st.multiselect("Select columns", self.dataset.columns.tolist())
         if select_columns:
-            dataset = self.dataset.copy(deep=True)[select_columns]
+            dataset = self.dataset.copy(deep=True)
             if st.button("Execute Feature Selection", use_container_width=True):   
                 object=DropFeatures(select_columns)
                 dataframe=object.fit_transform(dataset)
