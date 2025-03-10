@@ -78,14 +78,20 @@ class Features:
             
             if radio_options:
                 with col2:
-                    feature_methods[radio_options]()
+                    feature_methods[radio_options](radio_options)
     
     def create_features(self):
         st.write("Feature creation logic goes here.")
     
-    def drop_features(self):
-        st.write("Dropping selected features.")
-    
+    def drop_features(self,keyy):
+        select_columns = st.multiselect("Select columns", self.dataset.columns.tolist())
+        if select_columns:
+            dataset = self.dataset.copy(deep=True)[select_columns]
+            if st.button("Execute Feature Selection", use_container_width=True):   
+                object=DropFeatures(columns)
+                dataframe=object.fit_transform(dataset)
+                st.session_state[keyy]=dataframe
+                st.dataframe(dataframe)
     def drop_constant_features(self):
         st.write("Dropping constant features.")
     
