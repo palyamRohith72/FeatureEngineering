@@ -149,34 +149,34 @@ class Features:
             except Exception as e:
                 st.error(e)
     
-    def smart_correlated_selection(self):
+    def smart_correlated_selection(self,option):
         st.write("Performing smart correlated selection.")
     
-    def mrmr(self):
+    def mrmr(self,option):
         st.write("Executing MRMR feature selection.")
     
-    def select_by_single_feature_performance(self):
+    def select_by_single_feature_performance(self,option):
         st.write("Selecting by single feature performance.")
     
-    def recursive_feature_elimination(self):
+    def recursive_feature_elimination(self,option):
         st.write("Performing recursive feature elimination.")
     
-    def recursive_feature_addition(self):
+    def recursive_feature_addition(self,option):
         st.write("Performing recursive feature addition.")
     
-    def drop_high_psi_features(self):
+    def drop_high_psi_features(self,option):
         st.write("Dropping high PSI features.")
     
-    def select_by_information_value(self):
+    def select_by_information_value(self,option):
         st.write("Selecting by information value.")
     
-    def select_by_shuffling(self):
+    def select_by_shuffling(self,option):
         st.write("Selecting by shuffling.")
     
-    def select_by_target_mean_performance(self):
+    def select_by_target_mean_performance(self,option):
         st.write("Selecting by target mean performance.")
     
-    def probe_feature_selection(self):
+    def probe_feature_selection(self,option):
         st.write("Performing probe feature selection.")
 
 file_uploader = st.sidebar.file_uploader("Upload CSV", type=['csv'])
