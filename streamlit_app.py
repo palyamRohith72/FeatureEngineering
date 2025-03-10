@@ -50,8 +50,16 @@ class Features:
                             st.error(e)
         
         with tab2:
-            st.write("View Data Placeholder")
-            
+            pass
+    def create_columns(self):
+        st.write(f"Columns Present is : {self.dataset.columns}")
+        data=self.dataset.copy(deep=True)
+        column_name=st.text_input("Enter the column name")
+        query=st.text_area("Select the text input, assuming that your dataset is stored in a variable called data")
+        if st.button("Apply Operation",use_container_width=True):
+            data=data.assign(column_name,eval(query))
+            st.dataframe(data)
+            st.session_state[f'create columns - {column_name} -{query}']=data
     def select_features(self):
         feature_methods = {
             "Drop features": self.drop_features,
@@ -81,7 +89,13 @@ class Features:
                     feature_methods[radio_options](radio_options)
     
     def create_features(self):
-        st.write("Feature creation logic goes here.")
+        tab1,tab2=st.tabs(["Perform Operations","View Data"])
+        with tab1:
+            col1,col2=st.columns([1,2],border=True)
+            radio_options=col1.radio("Operations Were",["Create Columns"])
+            if radio_options:
+                with col2:
+                    self.create_columns()
     
     def drop_features(self,keyy):
         select_columns = st.multiselect("Select columns", self.dataset.columns.tolist())
