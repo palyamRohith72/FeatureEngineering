@@ -23,13 +23,13 @@ class Features:
     def display(self):
         with st.sidebar:
             selected_option = option_menu("Select stage", ["See Correlations", "Select Features", "Create Features"])
-        
+            
         if selected_option == "See Correlations":
             self.correlations()
         elif selected_option == "Select Features":
-            pass
+            self.select_features()
         elif selected_option == "Create Features":
-            pass
+            self.create_features()
 
     def correlations(self):
         tab1, tab2 = st.tabs(["Perform Operations", "View Data"])
@@ -45,3 +45,91 @@ class Features:
         
         with tab2:
             st.write("View Data Placeholder")
+            
+    def select_features(self):
+        variables = st.session_state.keys()
+        feature_methods = {
+            "Drop features": self.drop_features,
+            "Drop Constant Features": self.drop_constant_features,
+            "Drop Duplicated Features": self.drop_duplicated_features,
+            "Drop Correlated Features": self.drop_correlated_features,
+            "Smart Correlated Selection": self.smart_correlated_selection,
+            "MRMR": self.mrmr,
+            "Select By Single Feature Performance": self.select_by_single_feature_performance,
+            "Recursive Feature Elimination": self.recursive_feature_elimination,
+            "Recursive Feature Addition": self.recursive_feature_addition,
+            "Drop High PSI Featutres": self.drop_high_psi_features,
+            "Select By Information Value": self.select_by_information_value,
+            "Select By Shuffling": self.select_by_shuffling,
+            "Select By Target Mean Performance": self.select_by_target_mean_performance,
+            "Probe Feature Selection": self.probe_feature_selection
+        }
+        
+        tab1, tab2 = st.tabs(["Perform Operations", "View Data"])
+        
+        with tab1:
+            col1, col2 = st.columns([1, 2])
+            radio_options = col1.radio("Options Were", st.session_state.keys())
+            
+            if radio_options:
+                with col2:
+                    feature_methods[radio_options](radio_options)
+    
+    def create_features(self):
+        st.write("Feature creation logic goes here.")
+    
+    def drop_features(self,key):
+        columns=col2.multiselect("Select columns to drop",self.dataset.columns.tolist())
+        if st.button("Apply the process",use_container_width=True,type='primary'):
+            dataset=self.dataset.copy(deep=True)
+            object=DropFeatures(columns)
+            dataFrame=object.fit_transform(dataset)
+            st.dataframe(dataFrame)
+            st.session_state[key]=dataFrame
+    
+    def drop_constant_features(self):
+        st.write("Dropping constant features.")
+    
+    def drop_duplicated_features(self):
+        st.write("Dropping duplicated features.")
+    
+    def drop_correlated_features(self):
+        st.write("Dropping correlated features.")
+    
+    def smart_correlated_selection(self):
+        st.write("Performing smart correlated selection.")
+    
+    def mrmr(self):
+        st.write("Executing MRMR feature selection.")
+    
+    def select_by_single_feature_performance(self):
+        st.write("Selecting by single feature performance.")
+    
+    def recursive_feature_elimination(self):
+        st.write("Performing recursive feature elimination.")
+    
+    def recursive_feature_addition(self):
+        st.write("Performing recursive feature addition.")
+    
+    def drop_high_psi_features(self):
+        st.write("Dropping high PSI features.")
+    
+    def select_by_information_value(self):
+        st.write("Selecting by information value.")
+    
+    def select_by_shuffling(self):
+        st.write("Selecting by shuffling.")
+    
+    def select_by_target_mean_performance(self):
+        st.write("Selecting by target mean performance.")
+    
+    def probe_feature_selection(self):
+        st.write("Performing probe feature selection.")
+
+file_uploader=st.sidebar.file_uploader("Upload CSV",type=['csv'])
+if file_uploader:
+    dataframe=pd.read_csv(file_uploader)
+    st.session_state['readed_csv']=dataframe
+    selected_output=st.selectbox("Outputs to select",[x for x in st.session_state.keys() if x not None])
+    if selected_output:
+        Features(selected_output).display()
