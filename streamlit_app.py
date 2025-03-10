@@ -42,7 +42,7 @@ class Features:
                 select_columns = st.multiselect("Select columns", self.dataset.columns.tolist())
                 if select_columns:
                     dataset = self.dataset.copy(deep=True)[select_columns]
-                    if st.button("Execute Feature Selection", use_container_width=True):
+                    if st.checkbox("Execute Feature Selection"):
                         feature_selection = FeatureSelection(dataset)
                         try:
                             getattr(feature_selection, radio_options, lambda: st.warning("Invalid Method"))()
