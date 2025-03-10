@@ -130,6 +130,6 @@ file_uploader=st.sidebar.file_uploader("Upload CSV",type=['csv'])
 if file_uploader:
     dataframe=pd.read_csv(file_uploader)
     st.session_state['readed_csv']=dataframe
-    selected_output=st.selectbox("Outputs to select",[x for x in st.session_state.keys() if x not None])
+    selected_output=st.selectbox("Outputs to select",[x for x in st.session_state.keys() if x != None])
     if selected_output:
         Features(selected_output).display()
