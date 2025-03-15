@@ -4,13 +4,7 @@ import pandas as pd
 from feature_engine.selection import *
 from FEATURE_SELECTION import *
 
-variables = [
-    "Drop features", "Drop Constant Features", "Drop Duplicated Features",
-    "Drop Correlated Features", "Smart Correlated Selection", "MRMR",
-    "Select By Single Feature Performance", "Recursive Feature Elimination",
-    "Recursive Feature Addition", "Drop High PSI Features", "Select By Information Value",
-    "Select By Shuffling", "Select By Target Mean Performance", "Probe Feature Selection"
-]
+variables = ["Hey Jude"]
 
 for i in variables:
     if i not in st.session_state:
@@ -52,30 +46,23 @@ class Features:
         with tab2:
             pass
     def create_columns(self):
-        st.write(f"Columns Present is : {self.dataset.columns}")
-        data=self.dataset.copy(deep=True)
-        column_name=st.text_input("Enter the column name")
-        query=st.text_area("Select the text input, assuming that your dataset is stored in a variable called data")
-        if st.button("Apply Operation",use_container_width=True):
-            data=data.assign(column_name=eval(query))
-            st.dataframe(data)
-            st.session_state[f'create columns - {column_name} -{query}']=data
+        pass
     def select_features(self):
         feature_methods = {
             "Drop features": self.drop_features,
-            "Drop Constant Features": self.drop_constant_features,
-            "Drop Duplicated Features": self.drop_duplicated_features,
-            "Drop Correlated Features": self.drop_correlated_features,
-            "Smart Correlated Selection": self.smart_correlated_selection,
+            "Drop Constant Features": drop_constant_features,
+            "Drop Duplicated Features": drop_duplicated_features,
+            "Drop Correlated Features": drop_correlated_features,
+            "Smart Correlated Selection": smart_correlated_selection,
             "MRMR": self.mrmr,
-            "Select By Single Feature Performance": self.select_by_single_feature_performance,
-            "Recursive Feature Elimination": self.recursive_feature_elimination,
-            "Recursive Feature Addition": self.recursive_feature_addition,
-            "Drop High PSI Features": self.drop_high_psi_features,
-            "Select By Information Value": self.select_by_information_value,
-            "Select By Shuffling": self.select_by_shuffling,
-            "Select By Target Mean Performance": self.select_by_target_mean_performance,
-            "Probe Feature Selection": self.probe_feature_selection
+            "Select By Single Feature Performance": select_by_single_feature_performance,
+            "Recursive Feature Elimination": recursive_feature_elimination,
+            "Recursive Feature Addition": recursive_feature_addition,
+            "Drop High PSI Features": drop_high_psi_features,
+            "Select By Information Value": select_by_information_value,
+            "Select By Shuffling": select_by_shuffling,
+            "Select By Target Mean Performance": select_by_target_mean_performance,
+            "Probe Feature Selection": probe_feature_selection
         }
         
         tab1, tab2 = st.tabs(["Perform Operations", "View Data"])
@@ -96,89 +83,6 @@ class Features:
             if radio_options:
                 with col2:
                     self.create_columns()
-    
-    def drop_features(self,keyy):
-        select_columns = st.multiselect("Select columns", self.dataset.columns.tolist())
-        if select_columns:
-            dataset = self.dataset.copy(deep=True)
-            if st.button("Execute Feature Selection", use_container_width=True):   
-                object=DropFeatures(select_columns)
-                dataframe=object.fit_transform(dataset)
-                st.session_state[keyy]=dataframe
-                st.dataframe(dataframe)
-    def drop_constant_features(self,option):
-        select_columns = st.multiselect("Select columns", self.dataset.columns.tolist())
-        tol=int(st.number_input("""Threshold to detect constant/quasi-constant features. Variables showing the same value in a
-        percentage of observations greater than tol will be considered 
-        constant / quasi-constant and dropped. If tol=1, the transformer 
-        removes constant variables. Else, it will remove quasi-constant variables.
-        For example, if tol=0.98, the transformer will remove variables that show
-        the same value in 98% of the observations.""",1))
-        dataset = self.dataset.copy(deep=True)
-        if st.button("Execute Feature Selection", use_container_width=True):   
-            try:
-                object=DropConstantFeatures(select_columns,tol)
-                dataframe=object.fit_transform(dataset)
-                st.session_state[option]=dataframe
-                st.dataframe(dataframe)
-            except Exception as e:
-                st.error(e)
-    def drop_duplicated_features(self,option):
-        select_columns = st.multiselect("Select columns", self.dataset.columns.tolist())
-        dataset = self.dataset.copy(deep=True)
-        if st.button("Execute Feature Selection", use_container_width=True):   
-            try:
-                object=DropDuplicateFeatures(select_columns)
-                dataframe=object.fit_transform(dataset)
-                st.session_state[option]=dataframe
-                st.dataframe(dataframe)
-            except Exception as e:
-                st.error(e)
-    
-    def drop_correlated_features(self,option):
-        select_columns = st.multiselect("Select columns", self.dataset.columns.tolist())
-        threshold=st.number_input("The correlation threshold above which a feature will be deemed correlated with another one and removed from the dataset.",0.1)
-        method=st.selectbox("Correlation method -Can take ‘pearson’, ‘spearman’, ‘kendall’",["pearson","spearman","kendall"])
-        dataset = self.dataset.copy(deep=True)
-        if st.button("Execute Feature Selection", use_container_width=True):   
-            try:
-                object=DropCorrelatedFeatures(select_columns,method,threshold)
-                dataframe=object.fit_transform(dataset)
-                st.session_state[option]=dataframe
-                st.dataframe(dataframe)
-            except Exception as e:
-                st.error(e)
-    
-    def smart_correlated_selection(self,option):
-        st.write("Performing smart correlated selection.")
-    
-    def mrmr(self,option):
-        st.write("Executing MRMR feature selection.")
-    
-    def select_by_single_feature_performance(self,option):
-        st.write("Selecting by single feature performance.")
-    
-    def recursive_feature_elimination(self,option):
-        st.write("Performing recursive feature elimination.")
-    
-    def recursive_feature_addition(self,option):
-        st.write("Performing recursive feature addition.")
-    
-    def drop_high_psi_features(self,option):
-        st.write("Dropping high PSI features.")
-    
-    def select_by_information_value(self,option):
-        st.write("Selecting by information value.")
-    
-    def select_by_shuffling(self,option):
-        st.write("Selecting by shuffling.")
-    
-    def select_by_target_mean_performance(self,option):
-        st.write("Selecting by target mean performance.")
-    
-    def probe_feature_selection(self,option):
-        st.write("Performing probe feature selection.")
-
 file_uploader = st.sidebar.file_uploader("Upload CSV", type=['csv'])
 if file_uploader:
     dataframe = pd.read_csv(file_uploader)
