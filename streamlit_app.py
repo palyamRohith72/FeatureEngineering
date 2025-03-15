@@ -53,7 +53,7 @@ class Features:
                        "cyclical_features":cyclical_features,"descision_tree_features":decision_tree_features,
                        "custom_features":custom_features}
             col1,col2=st.columns([1,2],border=True)
-            radio_options=st.radio("Select the option to perform",value_dict.keys())
+            radio_options=col1.radio("Select the option to perform",value_dict.keys())
             if radio_options:
                 with col2:
                     value_dict[radio_options](radio_options,self.dataset)
