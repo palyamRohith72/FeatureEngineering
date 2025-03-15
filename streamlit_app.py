@@ -50,7 +50,7 @@ class Features:
         pass
     def select_features(self):
         feature_methods = {
-            "Drop features": self.drop_features,
+            "Drop features": drop_features,
             "Drop Constant Features": drop_constant_features,
             "Drop Duplicated Features": drop_duplicated_features,
             "Drop Correlated Features": drop_correlated_features,
