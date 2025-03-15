@@ -74,7 +74,7 @@ class Features:
             
             if radio_options:
                 with col2:
-                    feature_methods[radio_options](radio_options)
+                    feature_methods[radio_options](radio_options,self.dataset)
     
     def create_features(self):
         tab1,tab2=st.tabs(["Perform Operations","View Data"])
