@@ -46,7 +46,7 @@ class Features:
         
         with tab2:
             pass
-    def create_columns(self):
+    def create_features(self):
         tab1,tab2=st.tabs(["Perform Operations","View Data"])
         with tab1:
             value_dict={"math_features":math_features,"relative_features":relative_features,
