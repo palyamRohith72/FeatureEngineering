@@ -3,6 +3,7 @@ from streamlit_option_menu import option_menu
 import pandas as pd
 from feature_engine.selection import *
 from FEATURE_SELECTION import *
+from SELECTORS import *
 
 variables = ["Hey Jude"]
 
