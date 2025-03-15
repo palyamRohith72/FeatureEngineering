@@ -47,7 +47,11 @@ class Features:
         with tab2:
             pass
     def create_columns(self):
-        pass
+        tab1,tab2=st.tabs(["Perform Operations","View Data"])
+        with tab1:
+            value_dict={}
+            col1,col2=st.columns([1,2],border=True)
+            
     def select_features(self):
         feature_methods = {
             "Drop features": drop_features,
