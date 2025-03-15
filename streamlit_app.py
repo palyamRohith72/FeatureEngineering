@@ -49,9 +49,14 @@ class Features:
     def create_columns(self):
         tab1,tab2=st.tabs(["Perform Operations","View Data"])
         with tab1:
-            value_dict={}
+            value_dict={"math_features":math_features,"relative_features":relative_features,
+                       "cyclical_features":cyclical_features,"descision_tree_features":decision_tree_features,
+                       "custom_features":custom_features}
             col1,col2=st.columns([1,2],border=True)
-            
+            radio_options=st.radio("Select the option to perform",value_dict.keys())
+            if radio_options:
+                with col2:
+                    value_dict[radio_options](radio_options,self.dataset)
     def select_features(self):
         feature_methods = {
             "Drop features": drop_features,
@@ -80,14 +85,7 @@ class Features:
                 with col2:
                     feature_methods[radio_options](radio_options,self.dataset)
     
-    def create_features(self):
-        tab1,tab2=st.tabs(["Perform Operations","View Data"])
-        with tab1:
-            col1,col2=st.columns([1,2],border=True)
-            radio_options=col1.radio("Operations Were",["Create Columns"])
-            if radio_options:
-                with col2:
-                    self.create_columns()
+
 file_uploader = st.sidebar.file_uploader("Upload CSV", type=['csv'])
 if file_uploader:
     dataframe = pd.read_csv(file_uploader)
