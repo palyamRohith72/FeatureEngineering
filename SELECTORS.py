@@ -1,4 +1,4 @@
-def drop_features(self,keyy):
+def drop_features(keyy):
   select_columns = st.multiselect("Select columns", self.dataset.columns.tolist())
   if select_columns:
       dataset = self.dataset.copy(deep=True)
@@ -7,7 +7,7 @@ def drop_features(self,keyy):
           dataframe=object.fit_transform(dataset)
           st.session_state[keyy]=dataframe
           st.dataframe(dataframe)
-def drop_constant_features(self,option):
+def drop_constant_features(option):
     select_columns = st.multiselect("Select columns", self.dataset.columns.tolist())
     tol=int(st.number_input("""Threshold to detect constant/quasi-constant features. Variables showing the same value in a
     percentage of observations greater than tol will be considered 
@@ -24,7 +24,7 @@ def drop_constant_features(self,option):
             st.dataframe(dataframe)
         except Exception as e:
             st.error(e)
-def drop_duplicated_features(self,option):
+def drop_duplicated_features(option):
     select_columns = st.multiselect("Select columns", self.dataset.columns.tolist())
     dataset = self.dataset.copy(deep=True)
     if st.button("Execute Feature Selection", use_container_width=True):   
@@ -36,7 +36,7 @@ def drop_duplicated_features(self,option):
         except Exception as e:
             st.error(e)
 
-def drop_correlated_features(self,option):
+def drop_correlated_features(option):
     select_columns = st.multiselect("Select columns", self.dataset.columns.tolist())
     threshold=st.number_input("The correlation threshold above which a feature will be deemed correlated with another one and removed from the dataset.",0.1)
     method=st.selectbox("Correlation method -Can take ‘pearson’, ‘spearman’, ‘kendall’",["pearson","spearman","kendall"])
@@ -50,32 +50,32 @@ def drop_correlated_features(self,option):
         except Exception as e:
             st.error(e)
 
-def smart_correlated_selection(self,option):
+def smart_correlated_selection(option):
     st.write("Performing smart correlated selection.")
 
 def mrmr(self,option):
     st.write("Executing MRMR feature selection.")
 
-def select_by_single_feature_performance(self,option):
+def select_by_single_feature_performance(option):
     st.write("Selecting by single feature performance.")
 
-def recursive_feature_elimination(self,option):
+def recursive_feature_elimination(option):
     st.write("Performing recursive feature elimination.")
 
-def recursive_feature_addition(self,option):
+def recursive_feature_addition(option):
     st.write("Performing recursive feature addition.")
 
-def drop_high_psi_features(self,option):
+def drop_high_psi_features(option):
     st.write("Dropping high PSI features.")
 
-def select_by_information_value(self,option):
+def select_by_information_value(option):
     st.write("Selecting by information value.")
 
-def select_by_shuffling(self,option):
+def select_by_shuffling(option):
     st.write("Selecting by shuffling.")
 
-def select_by_target_mean_performance(self,option):
+def select_by_target_mean_performance(option):
     st.write("Selecting by target mean performance.")
 
-def probe_feature_selection(self,option):
+def probe_feature_selection(option):
     st.write("Performing probe feature selection.")
