@@ -224,5 +224,5 @@ def drop_high_psi_features(option, df):
           
           st.write("Transformed DataFrame:")
           st.dataframe(df_transformed)
-        except e as Exception:
+        except Exception as e:
           st.error(e)
