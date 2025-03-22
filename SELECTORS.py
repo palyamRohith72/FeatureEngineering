@@ -224,16 +224,24 @@ def drop_high_psi_features(option, df):
           st.dataframe(df_transformed)
         except Exception as e:
           st.error(e)
+
 def select_by_information_value(option, df):
     # Clone the dataframe to preserve the original
     df_clone = df.copy()
     
     st.header("Select By Information Value Configuration")
     
+    # Input for target variable (y)
+    target_variable = st.selectbox(
+        "Select the target variable (y):",
+        options=list(df_clone.columns),
+        help="The target variable for binary classification. This is required to calculate the Information Value (IV)."
+    )
+    
     # Input for variables
     variables = st.multiselect(
         "Variables to evaluate (variables):",
-        options=list(df_clone.columns),
+        options=[col for col in df_clone.columns if col != target_variable],  # Exclude target variable
         default=None,
         help="The list of variables to evaluate. If None, the transformer will evaluate all variables in the dataset (except datetime)."
     )
@@ -285,8 +293,12 @@ def select_by_information_value(option, df):
                 confirm_variables=confirm_variables
             )
             
+            # Separate features (X) and target (y)
+            X = df_clone.drop(columns=[target_variable])
+            y = df_clone[target_variable]
+            
             # Fit and transform the dataframe
-            df_transformed = iv_selector.fit_transform(df_clone,y=None)
+            df_transformed = iv_selector.fit_transform(X, y)
             
             st.write("Transformed DataFrame:")
             st.dataframe(df_transformed)
