@@ -69,10 +69,6 @@ def select_by_single_feature_performance(option,data):
 def recursive_feature_elimination(option,data):
     st.write("Performing recursive feature elimination.")
 
-def recursive_feature_addition(option,data):
-    st.write("Performing recursive feature addition.")
-
-
 def drop_high_psi_features(option, df):
     # Clone the dataframe to preserve the original
     df_clone = df.copy()
@@ -408,8 +404,8 @@ def select_by_shuffling(option, df):
         except Exception as e:
             st.error(f"An error occurred: {e}")
 
-from feature_engine.selection import SelectByTargetMeanPerformance
-from sklearn.model_selection import KFold, StratifiedKFold
+from feature_engine.selection import *
+from sklearn.model_selection import *
 
 def select_by_target_mean_performance(option, df):
     # Clone the dataframe to preserve the original
