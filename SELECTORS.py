@@ -71,12 +71,6 @@ def recursive_feature_elimination(option,data):
 def recursive_feature_addition(option,data):
     st.write("Performing recursive feature addition.")
 
-def probe_feature_selection(option,data):
-    st.write("Performing probe feature selection.")
-
-
-
-
 
 def drop_high_psi_features(option, df):
     # Clone the dataframe to preserve the original
@@ -536,3 +530,136 @@ def select_by_target_mean_performance(option, df):
         except Exception as e:
             st.error(f"An error occurred: {e}")
 
+def probe_feature_selection(option, df):
+    # Clone the dataframe to preserve the original
+    df_clone = df.copy()
+    
+    st.header("Probe Feature Selection Configuration")
+    
+    # Input for target variable (y)
+    target_variable = st.selectbox(
+        "Select the target variable (y):",
+        options=list(df_clone.columns),
+        help="The target variable for the machine learning model. This is required to evaluate feature importance."
+    )
+    
+    # Input for variables
+    variables = st.multiselect(
+        "Variables to evaluate (variables):",
+        options=[col for col in df_clone.columns if col != target_variable],  # Exclude target variable
+        default=None,
+        help="The list of variables to evaluate. If None, the transformer will evaluate all numerical features in the dataset."
+    )
+    
+    # Input for estimator
+    model_type = st.selectbox(
+        "Select the model type:",
+        options=['Classifier', 'Regressor'],
+        index=0,
+        help="Choose whether to use a classifier or regressor for feature selection."
+    )
+    
+    if model_type == 'Classifier':
+        estimator = RandomForestClassifier(random_state=42)
+    else:
+        estimator = RandomForestRegressor(random_state=42)
+    
+    # Input for collective
+    collective = st.checkbox(
+        "Use collective feature importance (collective):",
+        value=True,
+        help="Whether the feature importance should be derived from an estimator trained on the entire dataset (True), or trained using individual features (False)."
+    )
+    
+    # Input for scoring metric
+    scoring = st.selectbox(
+        "Select the scoring metric:",
+        options=['roc_auc', 'accuracy', 'r2', 'neg_mean_squared_error'],
+        index=0,
+        help="The metric used to evaluate the performance of the estimator. Common options include 'roc_auc', 'accuracy', 'r2', and 'neg_mean_squared_error'."
+    )
+    
+    # Input for n_probes
+    n_probes = st.number_input(
+        "Number of probe features to create (n_probes):",
+        min_value=1,
+        max_value=10,
+        value=1,
+        step=1,
+        help="Number of probe features to be created. If distribution is 'all', n_probes must be a multiple of 3."
+    )
+    
+    # Input for distribution
+    distribution = st.selectbox(
+        "Distribution for probe features (distribution):",
+        options=['normal', 'binomial', 'uniform', 'all'],
+        index=0,
+        help="The distribution used to create the probe features. The options are 'normal', 'binomial', 'uniform', and 'all'. 'all' creates at least 1 or more probe features comprised of each distribution type."
+    )
+    
+    # Input for cross-validation (cv)
+    cv = st.number_input(
+        "Number of cross-validation folds (cv):",
+        min_value=2,
+        max_value=10,
+        value=5,
+        step=1,
+        help="The number of folds to use for cross-validation."
+    )
+    
+    # Input for groups
+    groups = st.text_input(
+        "Group labels for the samples (groups):",
+        value="",
+        help="Group labels for the samples used while splitting the dataset into train/test set. Only used in conjunction with a 'Group' cv instance (e.g., GroupKFold)."
+    )
+    
+    # Input for random_state
+    random_state = st.number_input(
+        "Random state for reproducibility (random_state):",
+        min_value=0,
+        max_value=100,
+        value=0,
+        step=1,
+        help="Controls the randomness when creating probe features and splitting the dataset."
+    )
+    
+    # Input for confirm_variables
+    confirm_variables = st.checkbox(
+        "Confirm variables (confirm_variables):",
+        value=False,
+        help="If set to True, variables that are not present in the input dataframe will be removed from the list of variables."
+    )
+    
+    # Button to apply Probe Feature Selection
+    if st.button("Apply Probe Feature Selection", use_container_width=True, type='primary'):
+        try:
+            # Initialize ProbeFeatureSelection with user inputs
+            probe_selector = ProbeFeatureSelection(
+                estimator=estimator,
+                variables=variables if variables else None,
+                collective=collective,
+                scoring=scoring,
+                n_probes=n_probes,
+                distribution=distribution,
+                cv=cv,
+                groups=eval(groups) if groups else None,
+                random_state=random_state,
+                confirm_variables=confirm_variables
+            )
+            
+            # Separate features (X) and target (y)
+            X = df_clone.drop(columns=[target_variable])
+            y = df_clone[target_variable]
+            
+            # Fit and transform the dataframe
+            df_transformed = probe_selector.fit_transform(X, y)
+            
+            st.write("Transformed DataFrame:")
+            st.dataframe(df_transformed)
+            
+            # Display the feature importance for each feature
+            st.write("Feature Importance for Each Feature:")
+            st.write(probe_selector.feature_importances_)
+        except Exception as e:
+            st.error(f"An error occurred: {e}")
