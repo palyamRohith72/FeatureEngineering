@@ -70,9 +70,6 @@ def recursive_feature_elimination(option,data):
 def recursive_feature_addition(option,data):
     st.write("Performing recursive feature addition.")
 
-def select_by_information_value(option,data):
-    st.write("Selecting by information value.")
-
 def select_by_shuffling(option,data):
     st.write("Selecting by shuffling.")
 
@@ -81,6 +78,7 @@ def select_by_target_mean_performance(option,data):
 
 def probe_feature_selection(option,data):
     st.write("Performing probe feature selection.")
+
 
 
 
@@ -226,3 +224,75 @@ def drop_high_psi_features(option, df):
           st.dataframe(df_transformed)
         except Exception as e:
           st.error(e)
+def select_by_information_value(option, df):
+    # Clone the dataframe to preserve the original
+    df_clone = df.copy()
+    
+    st.header("Select By Information Value Configuration")
+    
+    # Input for variables
+    variables = st.multiselect(
+        "Variables to evaluate (variables):",
+        options=list(df_clone.columns),
+        default=None,
+        help="The list of variables to evaluate. If None, the transformer will evaluate all variables in the dataset (except datetime)."
+    )
+    
+    # Input for bins
+    bins = st.slider(
+        "Number of bins for numerical variables (bins):",
+        min_value=1,
+        max_value=20,
+        value=5,
+        step=1,
+        help="If the dataset contains numerical variables, the number of bins into which the values will be sorted."
+    )
+    
+    # Input for strategy
+    strategy = st.selectbox(
+        "Strategy for binning (strategy):",
+        options=['equal_width', 'equal_frequency'],
+        index=0,
+        help="Whether the bins should be of equal width ('equal_width') or equal frequency ('equal_frequency')."
+    )
+    
+    # Input for threshold
+    threshold = st.number_input(
+        "Threshold to drop a feature (threshold):",
+        min_value=0.0,
+        max_value=1.0,
+        value=0.2,
+        step=0.01,
+        help="The threshold to drop a feature. If the IV for a feature is < threshold, the feature will be dropped."
+    )
+    
+    # Input for confirm_variables
+    confirm_variables = st.checkbox(
+        "Confirm variables (confirm_variables):",
+        value=False,
+        help="If set to True, variables that are not present in the input dataframe will be removed from the list of variables."
+    )
+    
+    # Button to apply Select By Information Value
+    if st.button("Apply Select By Information Value", use_container_width=True, type='primary'):
+        try:
+            # Initialize SelectByInformationValue with user inputs
+            iv_selector = SelectByInformationValue(
+                variables=variables if variables else None,
+                bins=bins,
+                strategy=strategy,
+                threshold=threshold,
+                confirm_variables=confirm_variables
+            )
+            
+            # Fit and transform the dataframe
+            df_transformed = iv_selector.fit_transform(df_clone)
+            
+            st.write("Transformed DataFrame:")
+            st.dataframe(df_transformed)
+            
+            # Display the information value for each feature
+            st.write("Information Value for Each Feature:")
+            st.write(iv_selector.information_value_)
+        except Exception as e:
+            st.error(f"An error occurred: {e}")
