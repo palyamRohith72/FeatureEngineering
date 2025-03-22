@@ -4,6 +4,7 @@ import streamlit as st
 import numpy as np
 from feature_engine.selection import *
 from sklearn.ensemble import *
+from feature_engine.selection import *
 def drop_features(keyy,data):
   select_columns = st.multiselect("Select columns", data.columns.tolist())
   if select_columns:
@@ -661,5 +662,111 @@ def probe_feature_selection(option, df):
             # Display the feature importance for each feature
             st.write("Feature Importance for Each Feature:")
             st.write(probe_selector.feature_importances_)
+        except Exception as e:
+            st.error(f"An error occurred: {e}")
+
+def recursive_feature_addition(option, df):
+    # Clone the dataframe to preserve the original
+    df_clone = df.copy()
+    
+    st.header("Recursive Feature Addition Configuration")
+    
+    # Input for target variable (y)
+    target_variable = st.selectbox(
+        "Select the target variable (y):",
+        options=list(df_clone.columns),
+        help="The target variable for the machine learning model. This is required to evaluate feature importance."
+    )
+    
+    # Input for variables
+    variables = st.multiselect(
+        "Variables to evaluate (variables):",
+        options=[col for col in df_clone.columns if col != target_variable],  # Exclude target variable
+        default=None,
+        help="The list of variables to evaluate. If None, the transformer will evaluate all numerical features in the dataset."
+    )
+    
+    # Input for estimator
+    model_type = st.selectbox(
+        "Select the model type:",
+        options=['Classifier', 'Regressor'],
+        index=0,
+        help="Choose whether to use a classifier or regressor for feature selection."
+    )
+    
+    if model_type == 'Classifier':
+        estimator = RandomForestClassifier(random_state=42)
+    else:
+        estimator = RandomForestRegressor(random_state=42)
+    
+    # Input for scoring metric
+    scoring = st.selectbox(
+        "Select the scoring metric:",
+        options=['roc_auc', 'accuracy', 'r2', 'neg_mean_squared_error'],
+        index=0,
+        help="The metric used to evaluate the performance of the estimator. Common options include 'roc_auc', 'accuracy', 'r2', and 'neg_mean_squared_error'."
+    )
+    
+    # Input for threshold
+    threshold = st.number_input(
+        "Threshold to drop a feature (threshold):",
+        min_value=0.0,
+        max_value=1.0,
+        value=0.01,
+        step=0.01,
+        help="The value that defines whether a feature will be selected. Features with a performance increase below this threshold will be removed."
+    )
+    
+    # Input for cross-validation (cv)
+    cv = st.number_input(
+        "Number of cross-validation folds (cv):",
+        min_value=2,
+        max_value=10,
+        value=3,
+        step=1,
+        help="The number of folds to use for cross-validation."
+    )
+    
+    # Input for groups
+    groups = st.text_input(
+        "Group labels for the samples (groups):",
+        value="",
+        help="Group labels for the samples used while splitting the dataset into train/test set. Only used in conjunction with a 'Group' cv instance (e.g., GroupKFold)."
+    )
+    
+    # Input for confirm_variables
+    confirm_variables = st.checkbox(
+        "Confirm variables (confirm_variables):",
+        value=False,
+        help="If set to True, variables that are not present in the input dataframe will be removed from the list of variables."
+    )
+    
+    # Button to apply Recursive Feature Addition
+    if st.button("Apply Recursive Feature Addition", use_container_width=True, type='primary'):
+        try:
+            # Initialize RecursiveFeatureAddition with user inputs
+            rfa_selector = RecursiveFeatureAddition(
+                estimator=estimator,
+                variables=variables if variables else None,
+                scoring=scoring,
+                threshold=threshold,
+                cv=cv,
+                groups=eval(groups) if groups else None,
+                confirm_variables=confirm_variables
+            )
+            
+            # Separate features (X) and target (y)
+            X = df_clone.drop(columns=[target_variable])
+            y = df_clone[target_variable]
+            
+            # Fit and transform the dataframe
+            df_transformed = rfa_selector.fit_transform(X, y)
+            
+            st.write("Transformed DataFrame:")
+            st.dataframe(df_transformed)
+            
+            # Display the feature importance for each feature
+            st.write("Feature Importance for Each Feature:")
+            st.write(rfa_selector.feature_importances_)
         except Exception as e:
             st.error(f"An error occurred: {e}")
