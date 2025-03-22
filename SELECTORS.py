@@ -305,6 +305,6 @@ def select_by_information_value(option, df):
             
             # Display the information value for each feature
             st.write("Information Value for Each Feature:")
-            st.write(iv_selector.information_value_)
+            st.write(iv_selector.information_values_)
         except Exception as e:
             st.error(f"An error occurred: {e}")
