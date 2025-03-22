@@ -3,6 +3,7 @@ import pandas as pd
 import streamlit as st
 import numpy as np
 from feature_engine.selection import *
+from sklearn.ensemble import *
 def drop_features(keyy,data):
   select_columns = st.multiselect("Select columns", data.columns.tolist())
   if select_columns:
