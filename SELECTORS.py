@@ -220,6 +220,4 @@ def drop_high_psi_features(option,df):
     df_transformed = psi_selector.fit_transform(df_clone)
     
     st.write("Transformed DataFrame:")
-    st.write(df_transformed)
-    
-    return df_transformed
+    st.dataframe(df_transformed)
