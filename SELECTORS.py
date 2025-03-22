@@ -60,9 +60,6 @@ def drop_correlated_features(option,data):
 def smart_correlated_selection(option,data):
     st.write("Performing smart correlated selection.")
 
-def mrmr(option,data):
-    st.write("Executing MRMR feature selection.")
-
 def drop_high_psi_features(option, df):
     # Clone the dataframe to preserve the original
     df_clone = df.copy()
@@ -970,5 +967,156 @@ def recursive_feature_elimination(option, df):
             # Display the feature importance for each feature
             st.write("Feature Importance for Each Feature:")
             st.write(rfe_selector.feature_importances_)
+        except Exception as e:
+            st.error(f"An error occurred: {e}")
+
+def mrmr_feature_selection(option, df):
+    # Clone the dataframe to preserve the original
+    df_clone = df.copy()
+    
+    st.header("MRMR Feature Selection Configuration")
+    
+    # Input for target variable (y)
+    target_variable = st.selectbox(
+        "Select the target variable (y):",
+        options=list(df_clone.columns),
+        help="The target variable for the machine learning model. This is required to evaluate feature importance."
+    )
+    
+    # Input for variables
+    variables = st.multiselect(
+        "Variables to evaluate (variables):",
+        options=[col for col in df_clone.columns if col != target_variable],  # Exclude target variable
+        default=None,
+        help="The list of variables to evaluate. If None, the transformer will evaluate all numerical variables in the dataset."
+    )
+    
+    # Input for method
+    method = st.selectbox(
+        "Select the MRMR method:",
+        options=['MIQ', 'MID', 'FCD', 'FCQ', 'RFCQ'],
+        index=0,
+        help="How to estimate the relevance, redundance, and relation between the two. Options include 'MIQ', 'MID', 'FCD', 'FCQ', and 'RFCQ'."
+    )
+    
+    # Input for max_features
+    max_features = st.number_input(
+        "Maximum number of features to select (max_features):",
+        min_value=1,
+        max_value=len(df_clone.columns) if variables is None else len(variables),
+        value=int(len(df_clone.columns) * 0.2) if variables is None else int(len(variables) * 0.2),
+        step=1,
+        help="The number of features to select. If None, it defaults to 20% of the features seen during fit()."
+    )
+    
+    # Input for discrete_features
+    discrete_features = st.selectbox(
+        "Discrete features handling (discrete_features):",
+        options=['auto', True, False],
+        index=0,
+        help="If bool, then determines whether to consider all features discrete or continuous. If 'auto', it is assigned to False for dense X and to True for sparse X."
+    )
+    
+    # Input for n_neighbors
+    n_neighbors = st.number_input(
+        "Number of neighbors for MI estimation (n_neighbors):",
+        min_value=1,
+        max_value=10,
+        value=3,
+        step=1,
+        help="Number of neighbors to use for MI estimation for continuous variables. Only used when method is 'MIQ' or 'MID'."
+    )
+    
+    # Input for scoring
+    scoring = st.selectbox(
+        "Select the scoring metric:",
+        options=['roc_auc', 'accuracy', 'r2', 'neg_mean_squared_error'],
+        index=0,
+        help="The metric used to evaluate the performance of the estimator. Only used when method = 'RFCQ'."
+    )
+    
+    # Input for cross-validation (cv)
+    cv = st.number_input(
+        "Number of cross-validation folds (cv):",
+        min_value=2,
+        max_value=10,
+        value=3,
+        step=1,
+        help="The number of folds to use for cross-validation. Only used when method = 'RFCQ'."
+    )
+    
+    # Input for param_grid
+    param_grid = st.text_input(
+        "Hyperparameters for grid search (param_grid):",
+        value="{'max_depth': [1, 2, 3, 4]}",
+        help="The hyperparameters to optimize for the random forest through a grid search. Only used when method = 'RFCQ'."
+    )
+    
+    # Input for regression
+    regression = st.checkbox(
+        "Is the target variable for regression? (regression):",
+        value=False,
+        help="Indicates whether the target is one for regression or a classification."
+    )
+    
+    # Input for confirm_variables
+    confirm_variables = st.checkbox(
+        "Confirm variables (confirm_variables):",
+        value=False,
+        help="If set to True, variables that are not present in the input dataframe will be removed from the list of variables."
+    )
+    
+    # Input for random_state
+    random_state = st.number_input(
+        "Random state for reproducibility (random_state):",
+        min_value=0,
+        max_value=100,
+        value=42,
+        step=1,
+        help="Seed for reproducibility. Used when method is one of 'RFCQ', 'MIQ', or 'MID'."
+    )
+    
+    # Input for n_jobs
+    n_jobs = st.number_input(
+        "Number of jobs for parallel processing (n_jobs):",
+        min_value=-1,
+        max_value=16,
+        value=-1,
+        step=1,
+        help="The number of jobs to use for computing the mutual information. -1 means using all processors."
+    )
+    
+    # Button to apply MRMR Feature Selection
+    if st.button("Apply MRMR Feature Selection", use_container_width=True, type='primary'):
+        try:
+            # Initialize MRMR with user inputs
+            mrmr_selector = MRMR(
+                variables=variables if variables else None,
+                method=method,
+                max_features=max_features,
+                discrete_features=discrete_features,
+                n_neighbors=n_neighbors,
+                scoring=scoring,
+                cv=cv,
+                param_grid=eval(param_grid) if param_grid else None,
+                regression=regression,
+                confirm_variables=confirm_variables,
+                random_state=random_state,
+                n_jobs=n_jobs
+            )
+            
+            # Separate features (X) and target (y)
+            X = df_clone.drop(columns=[target_variable])
+            y = df_clone[target_variable]
+            
+            # Fit and transform the dataframe
+            df_transformed = mrmr_selector.fit_transform(X, y)
+            
+            st.write("Transformed DataFrame:")
+            st.dataframe(df_transformed)
+            
+            # Display the feature importance for each feature
+            st.write("Feature Importance for Each Feature:")
+            st.write(mrmr_selector.feature_importances_)
         except Exception as e:
             st.error(f"An error occurred: {e}")
