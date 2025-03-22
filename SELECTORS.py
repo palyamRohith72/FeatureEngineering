@@ -71,10 +71,6 @@ def recursive_feature_elimination(option,data):
 def recursive_feature_addition(option,data):
     st.write("Performing recursive feature addition.")
 
-
-def select_by_target_mean_performance(option,data):
-    st.write("Selecting by target mean performance.")
-
 def probe_feature_selection(option,data):
     st.write("Performing probe feature selection.")
 
@@ -539,3 +535,4 @@ def select_by_target_mean_performance(option, df):
             st.write(target_mean_selector.feature_performance_)
         except Exception as e:
             st.error(f"An error occurred: {e}")
+
