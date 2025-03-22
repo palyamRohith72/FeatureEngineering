@@ -202,24 +202,27 @@ def drop_high_psi_features(option, df):
     # Button to apply Drop High PSI Features
     if st.button("Apply Drop High PSI Features", use_container_width=True, type='primary'):
         # Initialize DropHighPSIFeatures with user inputs
-        psi_selector = DropHighPSIFeatures(
-            split_col=split_col,
-            split_frac=split_frac,
-            split_distinct=split_distinct,
-            cut_off=eval(cut_off) if cut_off else None,
-            switch=switch,
-            threshold=threshold,
-            bins=bins,
-            strategy=strategy,
-            min_pct_empty_bins=min_pct_empty_bins,
-            missing_values=missing_values,
-            variables=variables if variables else None,
-            confirm_variables=confirm_variables,
-            p_value=p_value
-        )
-        
-        # Fit and transform the dataframe
-        df_transformed = psi_selector.fit_transform(df_clone)
-        
-        st.write("Transformed DataFrame:")
-        st.dataframe(df_transformed)
+        try:
+          psi_selector = DropHighPSIFeatures(
+              split_col=split_col,
+              split_frac=split_frac,
+              split_distinct=split_distinct,
+              cut_off=eval(cut_off) if cut_off else None,
+              switch=switch,
+              threshold=threshold,
+              bins=bins,
+              strategy=strategy,
+              min_pct_empty_bins=min_pct_empty_bins,
+              missing_values=missing_values,
+              variables=variables if variables else None,
+              confirm_variables=confirm_variables,
+              p_value=p_value
+          )
+          
+          # Fit and transform the dataframe
+          df_transformed = psi_selector.fit_transform(df_clone)
+          
+          st.write("Transformed DataFrame:")
+          st.dataframe(df_transformed)
+        except e as Exception:
+          st.error(e)
