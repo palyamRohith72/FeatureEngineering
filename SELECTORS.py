@@ -118,7 +118,7 @@ def drop_high_psi_features(option, df):
     
     # Input for cut_off
     cut_off = st.text_input(
-        "Threshold to split the dataset (cut_off):",
+        "Threshold to split the dataset (cut_off):if you want to give a list then separete elements with ','",
         value="",
         help="Threshold to split the dataset based on the split_col variable. If int, float or date, observations where the split_col values are <= threshold will go to the basis data set and the rest to the test set. If a list, observations where the split_col values are within the list will go to the basis data set."
     )
@@ -206,7 +206,7 @@ def drop_high_psi_features(option, df):
             split_col=split_col,
             split_frac=split_frac,
             split_distinct=split_distinct,
-            cut_off=cut_off if cut_off else None,
+            cut_off=eval(cut_off) if cut_off else None,
             switch=switch,
             threshold=threshold,
             bins=bins,
