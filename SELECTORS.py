@@ -286,7 +286,7 @@ def select_by_information_value(option, df):
             )
             
             # Fit and transform the dataframe
-            df_transformed = iv_selector.fit_transform(df_clone)
+            df_transformed = iv_selector.fit_transform(df_clone,y=None)
             
             st.write("Transformed DataFrame:")
             st.dataframe(df_transformed)
