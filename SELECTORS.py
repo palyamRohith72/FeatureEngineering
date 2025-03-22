@@ -200,7 +200,7 @@ def drop_high_psi_features(option,df):
   )
   
   # Initialize DropHighPSIFeatures with user inputs
-if st.button("Apply Drop High PSI Features",use-container_width=True,type='primary'):
+if st.button("Apply Drop High PSI Features",use_container_width=True,type='primary'):
   psi_selector = DropHighPSIFeatures(
       split_col=split_col,
       split_frac=split_frac,
