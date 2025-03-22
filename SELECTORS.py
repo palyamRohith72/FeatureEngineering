@@ -1002,7 +1002,6 @@ def mrmr_feature_selection(option, df):
     # Input for max_features
     max_features = st.number_input(
         "Maximum number of features to select (max_features):",
-        min_value=1,
         max_value=len(df_clone.columns) if variables is None else len(variables),
         value=int(len(df_clone.columns) * 0.2) if variables is None else int(len(variables) * 0.2),
         step=1,
