@@ -64,7 +64,7 @@ class Features:
             "Drop Duplicated Features": drop_duplicated_features,
             "Drop Correlated Features": drop_correlated_features,
             "Smart Correlated Selection": smart_correlated_selection,
-            "MRMR": mrmr,
+            "MRMR": mrmr_feature_selection,
             "Select By Single Feature Performance": select_by_single_feature_performance,
             "Recursive Feature Elimination": recursive_feature_elimination,
             "Recursive Feature Addition": recursive_feature_addition,
