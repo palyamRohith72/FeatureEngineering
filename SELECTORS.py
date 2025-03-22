@@ -1002,9 +1002,7 @@ def mrmr_feature_selection(option, df):
     # Input for max_features
     max_features = st.number_input(
         "Maximum number of features to select (max_features):",
-        max_value=len(df_clone.columns) if variables is None else len(variables),
         value=1 if variables is None else int(len(variables) * 0.2),
-        step=1,
         help="The number of features to select. If None, it defaults to 20% of the features seen during fit()."
     )
     
