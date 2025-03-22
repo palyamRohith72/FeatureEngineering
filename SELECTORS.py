@@ -92,7 +92,7 @@ def drop_high_psi_features(option,df):
     st.sidebar.header("Drop High PSI Features Configuration")
     
     # Input for split_col
-    split_col = st.sidebar.selectbox(
+    split_col = st.selectbox(
         "Select the column to split the dataset (split_col):",
         options=[None] + list(df_clone.columns),
         index=0,
@@ -100,7 +100,7 @@ def drop_high_psi_features(option,df):
     )
     
     # Input for split_frac
-    split_frac = st.sidebar.slider(
+    split_frac = st.slider(
         "Proportion of observations in each dataset (split_frac):",
         min_value=0.1,
         max_value=0.9,
@@ -110,28 +110,28 @@ def drop_high_psi_features(option,df):
     )
     
     # Input for split_distinct
-    split_distinct = st.sidebar.checkbox(
+    split_distinct = st.checkbox(
         "Split based on unique values (split_distinct):",
         value=False,
         help="If True, split_frac is applied to the vector of unique values in split_col instead of being applied to the whole vector of values."
     )
     
     # Input for cut_off
-    cut_off = st.sidebar.text_input(
+    cut_off = st.text_input(
         "Threshold to split the dataset (cut_off):",
         value="",
         help="Threshold to split the dataset based on the split_col variable. If int, float or date, observations where the split_col values are <= threshold will go to the basis data set and the rest to the test set. If a list, observations where the split_col values are within the list will go to the basis data set."
     )
     
     # Input for switch
-    switch = st.sidebar.checkbox(
+    switch = st.checkbox(
         "Switch the order of basis and test datasets (switch):",
         value=False,
         help="If True, the order of the 2 dataframes used to determine the PSI (basis and test) will be switched."
     )
     
     # Input for threshold
-    threshold = st.sidebar.selectbox(
+    threshold = st.selectbox(
         "Threshold to drop a feature (threshold):",
         options=[0.25, 0.10, 'auto'],
         index=0,
@@ -139,7 +139,7 @@ def drop_high_psi_features(option,df):
     )
     
     # Input for bins
-    bins = st.sidebar.slider(
+    bins = st.slider(
         "Number of bins or intervals (bins):",
         min_value=1,
         max_value=20,
@@ -149,7 +149,7 @@ def drop_high_psi_features(option,df):
     )
     
     # Input for strategy
-    strategy = st.sidebar.selectbox(
+    strategy = st.selectbox(
         "Strategy for discretization (strategy):",
         options=['equal_frequency', 'equal_width'],
         index=0,
@@ -157,7 +157,7 @@ def drop_high_psi_features(option,df):
     )
     
     # Input for min_pct_empty_bins
-    min_pct_empty_bins = st.sidebar.number_input(
+    min_pct_empty_bins = st.number_input(
         "Minimum percentage for empty bins (min_pct_empty_bins):",
         min_value=0.0,
         max_value=1.0,
@@ -167,7 +167,7 @@ def drop_high_psi_features(option,df):
     )
     
     # Input for missing_values
-    missing_values = st.sidebar.selectbox(
+    missing_values = st.selectbox(
         "Handling missing values (missing_values):",
         options=['raise', 'ignore'],
         index=0,
@@ -175,7 +175,7 @@ def drop_high_psi_features(option,df):
     )
     
     # Input for variables
-    variables = st.sidebar.multiselect(
+    variables = st.multiselect(
         "Variables to evaluate (variables):",
         options=list(df_clone.columns),
         default=None,
@@ -183,14 +183,14 @@ def drop_high_psi_features(option,df):
     )
     
     # Input for confirm_variables
-    confirm_variables = st.sidebar.checkbox(
+    confirm_variables = st.checkbox(
         "Confirm variables (confirm_variables):",
         value=False,
         help="If set to True, variables that are not present in the input dataframe will be removed from the list of variables."
     )
     
     # Input for p_value
-    p_value = st.sidebar.number_input(
+    p_value = st.number_input(
         "P-value for auto threshold (p_value):",
         min_value=0.001,
         max_value=0.05,
@@ -200,6 +200,7 @@ def drop_high_psi_features(option,df):
     )
     
     # Initialize DropHighPSIFeatures with user inputs
+  if st.button("Apply Drop High PSI Features",use-container_width=True,type='primary'):
     psi_selector = DropHighPSIFeatures(
         split_col=split_col,
         split_frac=split_frac,
