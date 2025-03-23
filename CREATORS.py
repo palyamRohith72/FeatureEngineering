@@ -115,6 +115,7 @@ def addColumnsFromOutputs(option, data):
                 st.session_state['count'] = st.session_state['count'] + 1
                 dataset[columns] = st.session_state[availableKeys][columns]
                 st.session_state[f"{st.session_state['count']}.{option}"] = dataset
+                st.dataframe(dataset)
             else:
                 st.error("Column/s must be selected")
         else:
