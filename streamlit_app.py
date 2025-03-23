@@ -46,7 +46,7 @@ class Features:
         with tab1:
             value_dict={"math_features":math_features,"relative_features":relative_features,
                        "cyclical_features":cyclical_features,"descision_tree_features":decision_tree_features,
-                       "custom_features":custom_features}
+                       "custom_features":custom_features,"add columns from outputs":addColumnsFromOutputs}
             col1,col2=st.columns([1,2],border=True)
             radio_options=col1.radio("Select the option to perform",value_dict.keys())
             if radio_options:
