@@ -6,10 +6,6 @@ from FEATURE_SELECTION import *
 from SELECTORS import *
 from CREATORS import *
 
-for i in variables:
-    if i not in st.session_state:
-        st.session_state[i] = None
-
 class Features:
     def __init__(self, data):
         self.dataset = data
