@@ -4,7 +4,7 @@ from feature_engine.creation import MathFeatures, RelativeFeatures, CyclicalFeat
 
 if "count" not in st.session_state:
     st.session_state['count']=0
-def math_features(key, data):
+def math_features(option, data):
     dataset = data.copy(deep=True)
     columns = st.multiselect("Select the columns", dataset.columns.tolist(), key=f"math_cols_{key}")
     func = st.selectbox("Select mathematical function", ["sum", "diff", "prod", "div", "true_div", "floor_div", "exp", "mod"], key=f"math_func_{key}")
@@ -21,7 +21,7 @@ def math_features(key, data):
         except Exception as e:
             st.error(f"An error occurred: {e}")
 
-def relative_features(key, data):
+def relative_features(option, data):
     dataset = data.copy(deep=True)
     columns = st.multiselect("Select the columns", dataset.columns.tolist(), key=f"rel_cols_{key}")
     reference = st.multiselect("Select reference columns", dataset.columns.tolist(), key=f"rel_ref_{key}")
@@ -37,7 +37,7 @@ def relative_features(key, data):
         except Exception as e:
             st.error(f"An error occurred: {e}")
 
-def cyclical_features(key, data):
+def cyclical_features(option, data):
     dataset = data.copy(deep=True)
     variables = st.multiselect("Select columns", dataset.columns.tolist(), key=f"cyc_cols_{key}")
     max_values = st.text_area("Enter max values as dictionary", key=f"cyc_max_{key}")
@@ -53,7 +53,7 @@ def cyclical_features(key, data):
         except Exception as e:
             st.error(f"An error occurred: {e}")
 
-def decision_tree_features(key, data):
+def decision_tree_features(option, data):
     dataset = data.copy(deep=True)
     variables = st.multiselect("Select numerical variables", dataset.columns.tolist(), key=f"dtf_vars_{key}")
     features_to_combine = st.text_input("Enter features to combine (integer, list, tuple or None)", key=f"dtf_combine_{key}")
@@ -88,7 +88,7 @@ def decision_tree_features(key, data):
         except Exception as e:
             st.error(f"An error occurred: {e}")
 
-def custom_features(key, data):
+def custom_features(option, data):
     dataset = data.copy(deep=True)
     st.write(f"The columns present in the dataset are {dataset.columns}")
     column = st.text_input("Enter Desired Column Name", key=f"custom_col_{key}")
