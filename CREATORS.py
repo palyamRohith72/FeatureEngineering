@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 from feature_engine.creation import MathFeatures, RelativeFeatures, CyclicalFeatures, DecisionTreeFeatures
 
+if "count" not in st.session_state:
+    st.session_state['count']=0
 def math_features(key, data):
     dataset = data.copy(deep=True)
     columns = st.multiselect("Select the columns", dataset.columns.tolist(), key=f"math_cols_{key}")
@@ -14,6 +16,8 @@ def math_features(key, data):
         try:
             transformed_data = MathFeatures(variables=columns, func=func, new_variables_names=new_variables, drop_original=drop_original).fit_transform(dataset)
             st.dataframe(transformed_data)
+            st.session_state['count']=st.session_state['count']+1
+            st.session_state[f"{st.session_state['count']}.{option}"]=transformed_data
         except Exception as e:
             st.error(f"An error occurred: {e}")
 
@@ -28,6 +32,8 @@ def relative_features(key, data):
         try:
             transformed_data = RelativeFeatures(variables=columns, func=func, reference=reference, drop_original=drop_original).fit_transform(dataset)
             st.dataframe(transformed_data)
+            st.session_state['count']=st.session_state['count']+1
+            st.session_state[f"{st.session_state['count']}.{option}"]=transformed_data
         except Exception as e:
             st.error(f"An error occurred: {e}")
 
@@ -42,6 +48,8 @@ def cyclical_features(key, data):
         try:
             transformed_data = CyclicalFeatures(variables=variables, max_values=max_values, drop_original=drop_original).fit_transform(dataset)
             st.dataframe(transformed_data)
+            st.session_state['count']=st.session_state['count']+1
+            st.session_state[f"{st.session_state['count']}.{option}"]=transformed_data
         except Exception as e:
             st.error(f"An error occurred: {e}")
 
@@ -75,6 +83,8 @@ def decision_tree_features(key, data):
                 drop_original=drop_original
             ).fit_transform(dataset)
             st.dataframe(transformed_data)
+            st.session_state['count']=st.session_state['count']+1
+            st.session_state[f"{st.session_state['count']}.{option}"]=transformed_data
         except Exception as e:
             st.error(f"An error occurred: {e}")
 
@@ -88,5 +98,21 @@ def custom_features(key, data):
         try:
             dataset[column] = eval(entered_query)
             st.dataframe(dataset)
+            st.session_state['count']=st.session_state['count']+1
+            st.session_state[f"{st.session_state['count']}.{option}"]=dataset
         except Exception as e:
             st.error(f"An error occurred: {e}")
+def addColumnsFromOutputs(option,data):
+    dataset=data.vopy(deep=True)
+    availableKeys=st.selectbox("Available Outputs",st.session_state.key())
+    if st.button("Add Columns",use_container_width=True,type='primary'):
+        if availableKeys:
+            columns=st.multiselect("Select the columns to add",st.session_state[availableKeys].columns)
+            if columns:
+                st.session_state['count']=st.session_state['count']+1
+                dataset[columns]=st.session_state[availableKeys][columns]
+                st.session_state[f"{st.session_state['count']}.{option}"]=dataset
+            else:
+                st.error("Column/s must be selected")
+        else:
+            st.error("Output must be selected")
