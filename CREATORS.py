@@ -108,7 +108,7 @@ def custom_features(option, data):
 def addColumnsFromOutputs(option, data):
     dataset = data.copy(deep=True)
     availableKeys = st.selectbox("Available Outputs", list(st.session_state.keys()))
-    if st.checkbox("Add Columns", use_container_width=True, type='primary'):
+    if st.checkbox("Add Columns"):
         if availableKeys:
             columns = st.multiselect("Select the columns to add", st.session_state[availableKeys].columns)
             if columns:
