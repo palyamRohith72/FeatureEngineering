@@ -5,7 +5,6 @@ from feature_engine.selection import *
 from FEATURE_SELECTION import *
 from SELECTORS import *
 from CREATORS import *
-variables = ["Hey Jude"]
 
 for i in variables:
     if i not in st.session_state:
