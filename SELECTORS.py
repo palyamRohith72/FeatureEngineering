@@ -5,6 +5,8 @@ import numpy as np
 from feature_engine.selection import *
 from sklearn.ensemble import *
 from feature_engine.selection import *
+if "count" not in session_state:
+  st.session_state['count']=0
 def drop_features(keyy,data):
   select_columns = st.multiselect("Select columns", data.columns.tolist())
   if select_columns:
@@ -12,7 +14,8 @@ def drop_features(keyy,data):
       if st.button("Execute Feature Selection", use_container_width=True):   
           object=DropFeatures(select_columns)
           dataframe=object.fit_transform(dataset)
-          st.session_state[keyy]=dataframe
+          st.session_state['count']=st.session_state['count']+1
+          st.session_state[f"{st.session_state['count']}.{keyy}"]=dataframe
           st.dataframe(dataframe)
 def drop_constant_features(option,data):
     select_columns = st.multiselect("Select columns", data.columns.tolist())
@@ -27,7 +30,8 @@ def drop_constant_features(option,data):
         try:
             object=DropConstantFeatures(select_columns,tol)
             dataframe=object.fit_transform(dataset)
-            st.session_state[option]=dataframe
+            st.session_state['count']=st.session_state['count']+1
+            st.session_state[f"{st.session_state['count']}.{option}"]=dataframe
             st.dataframe(dataframe)
         except Exception as e:
             st.error(e)
@@ -38,7 +42,8 @@ def drop_duplicated_features(option,data):
         try:
             object=DropDuplicateFeatures(select_columns)
             dataframe=object.fit_transform(dataset)
-            st.session_state[option]=dataframe
+            st.session_state['count']=st.session_state['count']+1
+            st.session_state[f"{st.session_state['count']}.{option}"]=dataframe
             st.dataframe(dataframe)
         except Exception as e:
             st.error(e)
@@ -52,7 +57,8 @@ def drop_correlated_features(option,data):
         try:
             object=DropCorrelatedFeatures(select_columns,method,threshold)
             dataframe=object.fit_transform(dataset)
-            st.session_state[option]=dataframe
+            st.session_state['count']=st.session_state['count']+1
+            st.session_state[f"{st.session_state['count']}.{option}"]=dataframe
             st.dataframe(dataframe)
         except Exception as e:
             st.error(e)
@@ -196,6 +202,8 @@ def drop_high_psi_features(option, df):
           
           st.write("Transformed DataFrame:")
           st.dataframe(df_transformed)
+          st.session_state['count']=st.session_state['count']+1
+            st.session_state[f"{st.session_state['count']}.{option}"]=df_transformed
         except Exception as e:
           st.error(e)
 
@@ -276,6 +284,8 @@ def select_by_information_value(option, df):
             
             st.write("Transformed DataFrame:")
             st.dataframe(df_transformed)
+            st.session_state['count']=st.session_state['count']+1
+            st.session_state[f"{st.session_state['count']}.{option}"]=df_transformed
             
             # Display the information value for each feature
             st.write("Information Value for Each Feature:")
@@ -385,6 +395,8 @@ def select_by_shuffling(option, df):
             
             st.write("Transformed DataFrame:")
             st.dataframe(df_transformed)
+            st.session_state['count']=st.session_state['count']+1
+            st.session_state[f"{st.session_state['count']}.{option}"]=df_transformed
             
             # Display the performance drop for each feature
             st.write("Performance Drop for Each Feature:")
@@ -508,6 +520,8 @@ def select_by_target_mean_performance(option, df):
             
             st.write("Transformed DataFrame:")
             st.dataframe(df_transformed)
+            st.session_state['count']=st.session_state['count']+1
+            st.session_state[f"{st.session_state['count']}.{option}"]=df_transformed
             
             # Display the performance for each feature
             st.write("Performance for Each Feature:")
@@ -642,6 +656,8 @@ def probe_feature_selection(option, df):
             
             st.write("Transformed DataFrame:")
             st.dataframe(df_transformed)
+            st.session_state['count']=st.session_state['count']+1
+            st.session_state[f"{st.session_state['count']}.{option}"]=df_transformed
             
             # Display the feature importance for each feature
             st.write("Feature Importance for Each Feature:")
@@ -748,6 +764,8 @@ def recursive_feature_addition(option, df):
             
             st.write("Transformed DataFrame:")
             st.dataframe(df_transformed)
+            st.session_state['count']=st.session_state['count']+1
+            st.session_state[f"{st.session_state['count']}.{option}"]=df_transformed
             
             # Display the feature importance for each feature
             st.write("Feature Importance for Each Feature:")
@@ -854,6 +872,8 @@ def select_by_single_feature_performance(option, df):
             
             st.write("Transformed DataFrame:")
             st.dataframe(df_transformed)
+            st.session_state['count']=st.session_state['count']+1
+            st.session_state[f"{st.session_state['count']}.{option}"]=df_transformed
             
             # Display the performance for each feature
             st.write("Performance for Each Feature:")
@@ -957,6 +977,8 @@ def recursive_feature_elimination(option, df):
             
             # Fit and transform the dataframe
             df_transformed = rfe_selector.fit_transform(X, y)
+            st.session_state['count']=st.session_state['count']+1
+            st.session_state[f"{st.session_state['count']}.{option}"]=df_transformed
             
             st.write("Transformed DataFrame:")
             st.dataframe(df_transformed)
@@ -1108,6 +1130,8 @@ def mrmr_feature_selection(option, df):
             
             st.write("Transformed DataFrame:")
             st.dataframe(df_transformed)
+            st.session_state['count']=st.session_state['count']+1
+            st.session_state[f"{st.session_state['count']}.{option}"]=df_transformed
             
             # Display the feature importance for each feature
             st.write("Feature Importance for Each Feature:")
@@ -1246,6 +1270,8 @@ def smart_correlated_selection(option, df):
             
             # Fit and transform the dataframe
             df_transformed = scs_selector.fit_transform(X, y)
+            st.session_state['count']=st.session_state['count']+1
+            st.session_state[f"{st.session_state['count']}.{option}"]=df_transformed
             
             st.write("Transformed DataFrame:")
             st.dataframe(df_transformed)
