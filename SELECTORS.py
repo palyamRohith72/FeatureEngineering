@@ -5,7 +5,7 @@ import numpy as np
 from feature_engine.selection import *
 from sklearn.ensemble import *
 from feature_engine.selection import *
-if "count" not in session_state:
+if "count" not in st.session_state:
   st.session_state['count']=0
 def drop_features(keyy,data):
   select_columns = st.multiselect("Select columns", data.columns.tolist())
