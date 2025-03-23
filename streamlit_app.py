@@ -5,61 +5,6 @@ from feature_engine.selection import *
 from FEATURE_SELECTION import *
 from SELECTORS import *
 from CREATORS import *
-
-# Custom CSS for background colors
-st.markdown(
-    """
-    <style>
-    /* Main background color */
-    .stApp {
-        background-color: #f0f2f6;
-    }
-    /* Sidebar background color */
-    .css-1d391kg {
-        background-color: #ffffff;
-        border-right: 1px solid #e1e1e1;
-    }
-    /* Tab background color */
-    .stTabs [data-baseweb="tab-list"] {
-        background-color: #ffffff;
-        border-bottom: 1px solid #e1e1e1;
-    }
-    /* Tab hover and selected color */
-    .stTabs [data-baseweb="tab"] {
-        background-color: #ffffff;
-        color: #4a4a4a;
-    }
-    .stTabs [data-baseweb="tab"]:hover {
-        background-color: #f0f2f6;
-    }
-    .stTabs [aria-selected="true"] {
-        background-color: #f0f2f6;
-        color: #000000;
-        border-bottom: 2px solid #4a90e2;
-    }
-    /* Radio button and multiselect background */
-    .stRadio, .stMultiSelect {
-        background-color: #ffffff;
-        padding: 10px;
-        border-radius: 5px;
-        border: 1px solid #e1e1e1;
-    }
-    /* Button styling */
-    .stButton button {
-        background-color: #4a90e2;
-        color: #ffffff;
-        border-radius: 5px;
-        border: none;
-        padding: 10px 20px;
-    }
-    .stButton button:hover {
-        background-color: #357abd;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
 class Features:
     def __init__(self, data):
         self.dataset = data
