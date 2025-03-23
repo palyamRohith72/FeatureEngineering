@@ -203,7 +203,7 @@ def drop_high_psi_features(option, df):
           st.write("Transformed DataFrame:")
           st.dataframe(df_transformed)
           st.session_state['count']=st.session_state['count']+1
-            st.session_state[f"{st.session_state['count']}.{option}"]=df_transformed
+          st.session_state[f"{st.session_state['count']}.{option}"]=df_transformed
         except Exception as e:
           st.error(e)
 
