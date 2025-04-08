@@ -79,7 +79,6 @@ class Features:
             if radio_options:
                 with col2:
                     feature_methods[radio_options](radio_options,self.dataset)
-    
 
 file_uploader = st.sidebar.file_uploader("Upload CSV", type=['csv'])
 if file_uploader:
